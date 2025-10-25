@@ -20,6 +20,17 @@ A minimal viable NestJS backend service framework.
 npm install
 ```
 
+## Configuration
+
+The application can be configured using environment variables. Copy `.env.example` to `.env` to customize settings:
+
+```bash
+cp .env.example .env
+```
+
+Available environment variables:
+- `PORT` - Server port (default: 3000)
+
 ## Running the app
 
 ```bash
@@ -29,6 +40,9 @@ npm run start:dev
 # production mode
 npm run build
 npm run start:prod
+
+# custom port (default is 3000)
+PORT=4000 npm run start:prod
 ```
 
 ## API Endpoints
