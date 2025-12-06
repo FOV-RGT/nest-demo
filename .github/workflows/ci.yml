@@ -25,10 +25,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install
+
+      - name: Format & Lint code
+        run: pnpm format && pnpm lint:fix
 
       - name: Run tests with coverage
-        run: pnpm test --ci --coverage
+        run: pnpm test
 
       - name: Build
         run: pnpm build
