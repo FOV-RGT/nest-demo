@@ -20,4 +20,11 @@ describe('AppController (unit)', () => {
         expect(res).toHaveProperty('timestamp');
         expect(new Date(res.timestamp).toString()).not.toContain('Invalid');
     });
+
+    it('getDamn should return status damn and timestamp', () => {
+        const res: any = controller.getDamn();
+        expect(res).toHaveProperty('status', 'damn');
+        expect(res).toHaveProperty('timestamp');
+        expect(new Date(res.timestamp).toString()).not.toContain('Invalid');
+    });
 });

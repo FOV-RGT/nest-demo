@@ -12,12 +12,12 @@
 ## 前提
 
 - Node.js（v20 或更高）
-- npm 或 yarn
+- pnpm（v8.0.0 或更高）
 
 ## 安装
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## 配置
@@ -35,20 +35,20 @@ cp .env.example .env
 
 ```bash
 # 开发模式（自动重载）
-npm run start:dev
+pnpm start:dev
 
 # 生产模式
-npm run build
-npm run start:prod
+pnpm build
+pnpm start:prod
 
 # 使用自定义端口（默认 3000）
-PORT=4000 npm run start:prod
+PORT=4000 pnpm start:prod
 ```
 
 > Windows (cmd.exe) 上设置环境变量并运行生产模式的等价命令：
 
 ```bash
-set PORT=4000&& npm run start:prod
+set PORT=4000&& pnpm start:prod
 ```
 
 ## API 接口
@@ -69,7 +69,7 @@ src/
 ## 构建
 
 ```bash
-npm run build
+pnpm build
 ```
 
 构建产物将输出到 `dist/` 目录。

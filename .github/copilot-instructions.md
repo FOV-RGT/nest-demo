@@ -15,12 +15,12 @@
 
 ## 关键命令（开发者工作流）
 
-- 安装依赖：`npm install`
-- 开发（热重载）：`npm run start:dev`（内部调用 `nest start --watch`）
-- 打包：`npm run build`（使用 `nest build`，输出到 `dist/`）
-- 生产启动：先 `npm run build`，再 `npm run start:prod`（运行 `node dist/main`）
+- 安装依赖：`pnpm install`
+- 开发（热重载）：`pnpm start:dev`（内部调用 `nest start --watch`）
+- 打包：`pnpm build`（使用 `nest build`，输出到 `dist/`）
+- 生产启动：先 `pnpm build`，再 `pnpm start:prod`（运行 `node dist/main`）
 
-注意：项目 README 提到 `.env.example`/`.env`，但仓库中没有该文件；代理不要假设其存在，除非用户添加。
+注意：项目已迁移至 **pnpm** 作为包管理器（参见 `MIGRATION_TO_PNPM.md`）。`.env.example`/`.env` 文件不在仓库中；代理不要假设其存在，除非用户添加。
 
 ## 项目约定与可观察的模式（对 AI 很重要的细节）
 
@@ -38,9 +38,11 @@
 
 1. 修改或添加路由时，优先在 `src/` 下新增控制器文件并在 `AppModule`（或新模块）中注册。示例：新增 `GET /metrics`，请在 `app.controller.ts` 中新增方法并将实现委托给 `AppService` 或新服务。
 2. 在实现业务逻辑时使用依赖注入，不要 new 服务实例或耦合全局状态。
-3. 在变更 package 脚本或添加构建步骤时，保持 `npm run build` 仍使用 `nest build`，并保证 `dist/` 输出与 `main.ts` 的路径一致。
-4. 不要假设存在未版本控制的配置文件（例如 `.env`、`.eslintrc`、`.prettierrc`、Jest 配置）；如需新增，先在 PR 描述中说明并添加样例配置。
-5. 所有对外暴露的 JSON 接口应保持 JSON 序列化兼容（例如 `Date` 使用 ISO 字符串）。`/health` 的实现就是一个合规示例。
+3. 在变更 package 脚本或添加构建步骤时，保持 `pnpm build` 仍使用 `nest build`，并保证 `dist/` 输出与 `main.ts` 的路径一致。
+4. **添加依赖时使用 `pnpm add` 或 `pnpm add -D`**（不要使用 npm），并提交生成的 `pnpm-lock.yaml`。
+5. 不要假设存在未版本控制的配置文件（例如 `.env`、`.eslintrc`、`.prettierrc`、Jest 配置）；如需新增，先在 PR 描述中说明并添加样例配置。
+6. 所有对外暴露的 JSON 接口应保持 JSON 序列化兼容（例如 `Date` 使用 ISO 字符串）。`/health` 的实现就是一个合规示例。
+7. **包管理器**: 项目现已全面使用 **pnpm**（v8.0.0+），详见 `MIGRATION_TO_PNPM.md` 和 `package.json` 的 engines 字段。
 
 ## 可用的修改示例（直接可复制参考）
 
