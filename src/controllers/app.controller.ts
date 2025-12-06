@@ -20,7 +20,6 @@ export class AppController {
 
     @Get('damn')
     getDamn(): object {
-        const _damnVal = 33;
         return {
             status: 'damn',
             timestamp: new Date().toISOString(),
