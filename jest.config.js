@@ -8,28 +8,22 @@ module.exports = {
     // 测试环境：Node.js
     testEnvironment: 'node',
 
-    // ===== 模块解析 =====
-
-    // 模块名映射：自动移除导入中的 .js 扩展名
-    // 这样生产代码可以保留 .js，测试时 Jest 会自动处理
-    moduleNameMapper: {
-        '^(\\.{1,2}/.*)\\.js$': '$1',
-    },
-
-    // transform: {
-    //     "^.+\\.(t|j)s$": "ts-jest"
-    // },
-
     // ===== 测试文件配置 =====
 
     // 测试文件搜索根目录
-    roots: ['<rootDir>/src'],
+    roots: ['<rootDir>/src', '<rootDir>/test'],
 
     // 测试文件匹配模式
     testMatch: ['**/*.spec.ts', '**/*.e2e-spec.ts'],
 
     // 模块扩展名解析顺序
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+
+    // 路径别名映射（与 tsconfig.json 中的 paths 对应）
+    moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '^@cola/(.*)$': '<rootDir>/src/cola/$1',
+    },
 
     // ===== 覆盖率配置 =====
 

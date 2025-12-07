@@ -1,5 +1,5 @@
-import { AppController } from './app.controller';
-import { AppService } from '../services/app.service';
+import { AppController } from '@/app.controller';
+import { AppService } from '@/app.service';
 
 describe('AppController (unit)', () => {
     let controller: AppController;
@@ -17,13 +17,6 @@ describe('AppController (unit)', () => {
     it('getHealth should return status ok and timestamp', () => {
         const res: any = controller.getHealth();
         expect(res).toHaveProperty('status', 'ok');
-        expect(res).toHaveProperty('timestamp');
-        expect(new Date(res.timestamp).toString()).not.toContain('Invalid');
-    });
-
-    it('getDamn should return status damn and timestamp', () => {
-        const res: any = controller.getDamn();
-        expect(res).toHaveProperty('status', 'damn');
         expect(res).toHaveProperty('timestamp');
         expect(new Date(res.timestamp).toString()).not.toContain('Invalid');
     });
