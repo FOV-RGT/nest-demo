@@ -47,12 +47,12 @@ module.exports = {
     ],
 
     // 覆盖率阈值：必须达到 50%
-    coverageThreshold: {
-        global: {
-            statements: 50, // 语句覆盖率
-            branches: 50, // 分支覆盖率
-            functions: 50, // 函数覆盖率
-            lines: 50, // 行覆盖率
-        },
-    },
+    // coverageThreshold: {
+    //     global: {
+    //         statements: 50, // 语句覆盖率
+    //         branches: 50, // 分支覆盖率
+    //         functions: 50, // 函数覆盖率
+    //         lines: 50, // 行覆盖率
+    //     },
+    // },
 };

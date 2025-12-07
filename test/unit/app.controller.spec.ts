@@ -10,6 +10,10 @@ describe('AppController (unit)', () => {
         controller = new AppController(service);
     });
 
+    it('should be defined', () => {
+        expect(controller).toBeDefined();
+    });
+
     it('getHello should return Hello World!', () => {
         expect(controller.getHello()).toBe('Hello World!');
     });
