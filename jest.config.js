@@ -8,14 +8,6 @@ module.exports = {
     // 测试环境：Node.js
     testEnvironment: 'node',
 
-    // 将 .ts 文件视为 ES Module
-    extensionsToTreatAsEsm: ['.ts'],
-
-    // ts-jest transform 配置（新方式）
-    transform: {
-        '^.+\\.ts$': ['ts-jest', { useESM: true }],
-    },
-
     // ===== 模块解析 =====
 
     // 模块名映射：自动移除导入中的 .js 扩展名

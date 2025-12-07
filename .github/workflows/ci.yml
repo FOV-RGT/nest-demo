@@ -25,16 +25,37 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          echo "::group::📥 安装项目依赖"
+          pnpm install
+          echo "✓ 依赖安装完成"
+          echo "::endgroup::"
 
       - name: Format & Lint code
-        run: pnpm format && pnpm lint:fix
+        run: |
+          echo "::group::📝 格式化代码"
+          pnpm format
+          echo "✓ 格式化完成"
+          echo "::endgroup::"
+          echo "::group::✅ 质量检查"
+          pnpm lint:fix
+          echo "✓ 质量检查完成"
+          echo "::endgroup::"
 
       - name: Run tests with coverage
-        run: pnpm test
+        run: |
+          echo "::group::🧪 运行测试"
+          pnpm test --ci --coverage
+          echo "✓ 测试完成"
+          echo "::endgroup::"
+
 
       - name: Build
-        run: pnpm build
+        run: |
+          echo "::group::🏗️ 构建项目"
+          pnpm build
+          echo "✓ 构建完成"
+          echo "::endgroup::"
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
