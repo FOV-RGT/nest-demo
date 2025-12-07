@@ -39,7 +39,7 @@ module.exports = {
     // 覆盖率报告输出目录
     coverageDirectory: '<rootDir>/coverage',
 
-    coverageReporters: ['text'],
+    coverageReporters: [process.env.CI === 'true' ? 'lcov' : 'text', 'text'],
 
     // 收集覆盖率的文件模式
     collectCoverageFrom: [
