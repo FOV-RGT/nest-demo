@@ -39,7 +39,7 @@
     // 路径别名配置
     "paths": {
       "@/*": ["src/*"],
-      "@cola/*": ["src/cola/*"]
+      "@cola/*": ["src/modules/cola/*"]
     },
 
     // 允许 import JSON 文件

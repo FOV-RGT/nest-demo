@@ -22,7 +22,7 @@ module.exports = {
     // 路径别名映射（与 tsconfig.json 中的 paths 对应）
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
-        '^@cola/(.*)$': '<rootDir>/src/cola/$1',
+        '^@cola/(.*)$': '<rootDir>/src/modules/cola/$1',
     },
 
     // ===== 覆盖率配置 =====

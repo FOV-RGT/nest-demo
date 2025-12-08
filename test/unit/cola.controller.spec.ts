@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ColaController } from '@cola/cola.controller';
-import { ColaService } from '@cola/cola.service';
+import { ColaController } from '@/modules/cola/cola.controller';
+import { ColaService } from '@/modules/cola/cola.service';
 
 describe('ColaController', () => {
     let controller: ColaController;

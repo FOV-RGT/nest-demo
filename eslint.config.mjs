@@ -53,6 +53,7 @@ export default [
             'prefer-const': 'error', // 优先 const
             'no-var': 'error', // 禁用 var
             'eqeqeq': ['error', 'always'], // 使用 === 而非 ==
+            // 'no-redeclare': 'off', // 允许变量重声明
 
             // 关闭过度的规则
             '@typescript-eslint/explicit-function-return-types': 'off', // 不强制函数返回类型
