@@ -105,7 +105,8 @@ jobs:
       - name: Generate Summary
         if: always()  # 无论成功失败都执行
         run: |
-          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          TIMESTAMP=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          cat >> $GITHUB_STEP_SUMMARY << EOF
           ## 🚀 CI/CD Pipeline Summary
 
           ### ✅ 构建信息
@@ -115,10 +116,10 @@ jobs:
           - **运行号**: ${{ github.run_number }}
 
           ### 📦 Docker 镜像
-          - fovrgt/nest-demo:latest
-          - fovrgt/nest-demo:${{ github.ref_name }}-${{ github.sha }}
-          - fovrgt/nest-demo:${{ github.run_number }}
+          - 'fovrgt/nest-demo:latest'
+          - 'fovrgt/nest-demo:${{ github.ref_name }}-${{ github.sha }}'
+          - 'fovrgt/nest-demo:${{ github.run_number }}'
 
           ### ⏰ 时间戳
-          - 完成时间: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          - 完成时间: $TIMESTAMP
           EOF
