@@ -54,13 +54,13 @@ jobs:
           echo "✓ 测试完成"
           echo "::endgroup::"
 
-      - name: Publish test results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Jest Test Results
-          path: coverage/test-results.json
-          reporter: jest-junit
+      # - name: Publish test results
+      #   uses: dorny/test-reporter@v1
+      #   if: always()
+      #   with:
+      #     name: Jest Test Results
+      #     path: coverage/test-results.json
+      #     reporter: jest-junit
 
       # - name: Build
       #   run: |
