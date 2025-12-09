@@ -4,7 +4,7 @@
     "module": "ESNext",
 
     // 模块解析策略：使用 Node.js 风格解析
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
 
     // 生成 .d.ts 声明文件（用于类型提示）
     "declaration": true,

@@ -24,4 +24,4 @@ lerna-debug.log*
 .tmp
 
 /coverage
-/generated/prisma
+/src/prisma/generated
