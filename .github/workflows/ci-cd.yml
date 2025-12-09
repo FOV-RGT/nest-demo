@@ -1,0 +1,119 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: |
+          echo "::group::📥 安装项目依赖"
+          pnpm install
+          echo "✓ 依赖安装完成"
+          echo "::endgroup::"
+
+      - name: Format & Lint code
+        run: |
+          echo "::group::📝 格式化代码"
+          pnpm format
+          echo "✓ 格式化完成"
+          echo "::endgroup::"
+          echo "::group::✅ 质量检查"
+          pnpm lint:fix
+          echo "✓ 质量检查完成"
+          echo "::endgroup::"
+
+      - name: Run tests with coverage
+        run: |
+          echo "::group::🧪 运行测试"
+          pnpm test --ci --coverage
+          echo "✓ 测试完成"
+          echo "::endgroup::"
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Jest Test Results
+          path: coverage/test-results.json
+          reporter: jest-junit
+
+      # - name: Build
+      #   run: |
+      #     echo "::group::🏗️ 构建项目"
+      #     pnpm build
+      #     echo "✓ 构建完成"
+      #     echo "::endgroup::"
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+  build-and-publish:
+    needs: lint-and-test  # 仅在 lint-and-test 成功后运行
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            fovrgt/nest-demo:latest
+            fovrgt/nest-demo:${{ github.ref_name }}-${{ github.sha }}
+            fovrgt/nest-demo:${{ github.run_number }}
+          # 构建时传入环境变量
+          build-args: |
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+      - name: Generate Summary
+        if: always()  # 无论成功失败都执行
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          ## 🚀 CI/CD Pipeline Summary
+
+          ### ✅ 构建信息
+          - **仓库**: ${{ github.repository }}
+          - **分支**: ${{ github.ref_name }}
+          - **提交**: ${{ github.sha }}
+          - **运行号**: ${{ github.run_number }}
+
+          ### 📦 Docker 镜像
+          - fovrgt/nest-demo:latest
+          - fovrgt/nest-demo:${{ github.ref_name }}-${{ github.sha }}
+          - fovrgt/nest-demo:${{ github.run_number }}
+
+          ### ⏰ 时间戳
+          - 完成时间: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          EOF
