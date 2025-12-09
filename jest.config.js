@@ -60,13 +60,14 @@ export default {
         'src/**/*.{ts,js}',
         '!src/**/*.spec.ts', // 排除测试文件
         '!src/**/*.e2e-spec.ts', // 排除 e2e 测试文件
-        '!src/main.ts', // 排除入口文件
-        '!src/app.controller.ts', // 排除 controller
-        '!src/app.service.ts', // 排除 service
-        '!src/app.module.ts', // 排除 module
+        // '!src/main.ts', // 排除入口文件
+        // '!src/app.controller.ts', // 排除 controller
+        // '!src/app.service.ts', // 排除 service
+        // '!src/app.module.ts', // 排除 module
+        '!src/prisma/generated/**', // 排除 Prisma 生成的代码
     ],
 
-    // 覆盖率阈值：必须达到 50%
+    // 覆盖率阈值
     // coverageThreshold: {
     //     global: {
     //         statements: 50, // 语句覆盖率
