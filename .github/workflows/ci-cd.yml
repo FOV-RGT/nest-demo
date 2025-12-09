@@ -87,7 +87,7 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Docker Image
@@ -96,9 +96,9 @@ jobs:
           context: .
           push: true
           tags: |
-            fovrgt/nest-demo:latest
-            fovrgt/nest-demo:${{ github.ref_name }}-${{ github.sha }}
-            fovrgt/nest-demo:${{ github.run_number }}
+            ${{ vars.DOCKER_USERNAME }}/nest-demo:latest
+            ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.ref_name }}-${{ github.sha }}
+            ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.run_number }}
           # 构建时传入环境变量
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
@@ -116,9 +116,9 @@ jobs:
           - **运行号**: ${{ github.run_number }}
 
           ### 📦 Docker 镜像
-          - ${{ 'fovrgt' }}/nest-demo:latest
-          - ${{ 'fovrgt' }}/nest-demo:${{ github.ref_name }}-${{ github.sha }}
-          - ${{ 'fovrgt' }}/nest-demo:${{ github.run_number }}
+          - ${{ vars.DOCKER_USERNAME }}/nest-demo:latest
+          - ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.ref_name }}-${{ github.sha }}
+          - ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.run_number }}
 
           ### ⏰ 时间戳
           - 完成时间: $TIMESTAMP
