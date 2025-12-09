@@ -31,6 +31,11 @@ jobs:
           echo "✓ 依赖安装完成"
           echo "::endgroup::"
 
+      - name: Generate Prisma Client
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: pnpm prisma generate
+
       - name: Format & Lint code
         run: |
           echo "::group::📝 格式化代码"
