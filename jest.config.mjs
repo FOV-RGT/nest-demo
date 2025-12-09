@@ -1,5 +1,5 @@
 /** @type {import('jest').Config} */
-module.exports = {
+export default {
     // ===== 基础配置 =====
 
     // 预设：使用 ts-jest 处理 TypeScript
@@ -19,10 +19,30 @@ module.exports = {
     // 模块扩展名解析顺序
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
 
-    // 路径别名映射（与 tsconfig.json 中的 paths 对应）
+    // 路径别名映射(与 tsconfig.json 中的 paths 对应)
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
-        '^@cola/(.*)$': '<rootDir>/src/modules/cola/$1',
+        '^(\\.{1,2}/.*)\\.js$': '$1', // ESM: .js 映射到 .ts
+    },
+
+    // ===== ts-jest 配置 =====
+
+    // 将 .ts 文件视为 ESM 模块
+    extensionsToTreatAsEsm: ['.ts'],
+
+    transform: {
+        '^.+\\.tsx?$': [
+            // 匹配 .ts 和 .tsx 文件
+            'ts-jest',
+            {
+                useESM: true, // ESM 模式
+                tsconfig: {
+                    module: 'ESNext',
+                    moduleResolution: 'node',
+                    target: 'ESNext',
+                },
+            },
+        ],
     },
 
     // ===== 覆盖率配置 =====

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ColaModule } from '@cola/cola.module';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { ColaModule } from './modules/cola/cola.module.js';
 
 @Module({
     imports: [

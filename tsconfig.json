@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    // 模块系统：输出 Node.js 风格的 ES 模块格式（遵循 Node.js 的 ESM 约定）
-    "module": "nodenext",
+    // 模块系统：输出 ESNext 格式
+    "module": "ESNext",
 
-    // 模块解析策略：使用 Node.js 风格解析（支持 package.json 的 exports 字段）
-    "moduleResolution": "nodenext",
+    // 模块解析策略：使用 Node.js 风格解析
+    "moduleResolution": "bundler",
 
     // 生成 .d.ts 声明文件（用于类型提示）
     "declaration": true,
@@ -25,7 +25,7 @@
     "esModuleInterop": true,
 
     // 编译目标：输出最新的 JavaScript 语法（兼容现代 Node.js）
-    "target": "es2024",
+    "target": "ESNext",
 
     // 生成 source map 文件（用于调试）
     "sourceMap": true,
@@ -38,8 +38,7 @@
 
     // 路径别名配置
     "paths": {
-      "@/*": ["src/*"],
-      "@cola/*": ["src/modules/cola/*"]
+      "@/*": ["src/*"]
     },
 
     // 允许 import JSON 文件
@@ -70,6 +69,16 @@
     "noFallthroughCasesInSwitch": true,
 
     // 每个文件作为单独的模块编译（提高兼容性）
-    "isolatedModules": true
+    "isolatedModules": true,
+
+    // 自动补全 .js 扩展名
+    "moduleDetection": "force"
+  },
+
+  "ts-node": {
+    "esm": true,
+    "compilerOptions": {
+      "module": "ESNext"
+    }
   }
 }

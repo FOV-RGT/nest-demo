@@ -1,0 +1,7 @@
+node_modules/
+dist/
+coverage/
+src/prisma/generated/
+.env
+.env.local
+pnpm-lock.yaml

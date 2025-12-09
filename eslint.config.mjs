@@ -14,7 +14,7 @@ export default [
             parserOptions: {
                 project: './tsconfig.json',
                 tsconfigRootDir: __dirname,
-                sourceType: 'commonjs',
+                sourceType: 'module',
             },
             globals: {
                 console: 'readonly',
@@ -62,6 +62,6 @@ export default [
         },
     },
     {
-        ignores: ['node_modules/', 'dist/', 'coverage/'],
+        ignores: ['node_modules/', 'dist/', 'coverage/', 'src/prisma/generated'],
     },
 ];

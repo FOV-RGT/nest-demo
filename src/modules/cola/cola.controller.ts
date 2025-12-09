@@ -1,11 +1,15 @@
 import { Body as BodyDecorator, Controller, Get, Post, Logger, Query } from '@nestjs/common';
-import { ColaService } from './cola.service';
+import { ColaService } from './cola.service.js';
+// import { PrismaService } from '@/prisma/prisma.service';
 
 @Controller('cola')
 export class ColaController {
     private readonly logger = new Logger(ColaController.name);
 
-    constructor(private readonly colaService: ColaService) {}
+    constructor(
+        private readonly colaService: ColaService
+        // private readonly prismaService: PrismaService,
+    ) {}
 
     @Post('register')
     registerCola(@BodyDecorator() details: ColaBrand) {
@@ -20,6 +24,12 @@ export class ColaController {
         this.logger.log(`Fetching details for brand: ${brand}`);
         return this.colaService.getColaCategory(brand);
     }
+
+    // @Get('test')
+    // getTestData() {
+    //     this.logger.log(`Fetching test data from database`);
+    //     return this.prismaService.colaBrand.findMany();
+    // }
 }
 
 interface ColaBrand {

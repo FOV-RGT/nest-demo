@@ -1,5 +1,5 @@
 // Prettier 配置 - 代码风格格式化
-module.exports = {
+export default {
     // 指定每行代码的建议长度，超出换行
     printWidth: 100,
     // 指定每层缩进的空格数

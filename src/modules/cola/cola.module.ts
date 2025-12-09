@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ColaController } from './cola.controller';
-import { ColaService } from './cola.service';
+import { ColaController } from './cola.controller.js';
+import { ColaService } from './cola.service.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
 
 @Module({
     controllers: [ColaController],
-    providers: [ColaService],
+    providers: [ColaService, PrismaService],
 })
 export class ColaModule {}
