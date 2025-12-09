@@ -116,9 +116,9 @@ jobs:
           - **运行号**: ${{ github.run_number }}
 
           ### 📦 Docker 镜像
-          - 'fovrgt/nest-demo:latest'
-          - 'fovrgt/nest-demo:${{ github.ref_name }}-${{ github.sha }}'
-          - 'fovrgt/nest-demo:${{ github.run_number }}'
+          - ${{ 'fovrgt' }}/nest-demo:latest
+          - ${{ 'fovrgt' }}/nest-demo:${{ github.ref_name }}-${{ github.sha }}
+          - ${{ 'fovrgt' }}/nest-demo:${{ github.run_number }}
 
           ### ⏰ 时间戳
           - 完成时间: $TIMESTAMP
