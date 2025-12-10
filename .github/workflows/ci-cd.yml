@@ -73,6 +73,8 @@ jobs:
   build-and-publish:
     needs: lint-and-test  # 仅在 lint-and-test 成功后运行
     runs-on: ubuntu-latest
+    env:
+      DOCKER_REPO_NAME: ${{ vars.DOCKER_REPO_NAME || github.event.repository.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -92,9 +94,9 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
-            ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.sha }}
-            ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.run_number }}
+            ${{ vars.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:latest
+            ${{ vars.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ github.ref_name }}-${{ github.sha }}
+            ${{ vars.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ github.run_number }}
           # 构建时传入环境变量
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
@@ -106,16 +108,16 @@ jobs:
           ## 🚀 CI/CD Pipeline Summary
 
           ### ✅ 构建信息
-          - **代码仓库**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
-          - **镜像仓库** : [Docker Hub](https://hub.docker.com/repository/docker/${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }})
-          - **分支**: ${{ github.ref_name }}
-          - **提交**: ${{ github.sha }}
+          - **代码仓库**: [GitHub/${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
+          - **镜像仓库** : [Docker Hub/${{ vars.DOCKER_USERNAME }}/$DOCKER_REPO_NAME](https://hub.docker.com/repository/docker/${{ vars.DOCKER_USERNAME }}/$DOCKER_REPO_NAME)
+          - **所属分支**: ${{ github.ref_name }}
+          - **提交哈希**: ${{ github.sha }}
           - **运行号**: ${{ github.run_number }}
 
           ### 📦 Docker 镜像
-          - ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
-          - ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.sha }}
-          - ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.run_number }}
+          - ${{ vars.DOCKER_USERNAME }}/$DOCKER_REPO_NAME:latest
+          - ${{ vars.DOCKER_USERNAME }}/$DOCKER_REPO_NAME:${{ github.ref_name }}-${{ github.sha }}
+          - ${{ vars.DOCKER_USERNAME }}/$DOCKER_REPO_NAME:${{ github.run_number }}
 
           ### ⏰ 时间戳
           - 完成时间 (UTC): $TIMESTAMP_UTC
