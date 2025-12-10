@@ -46,6 +46,7 @@
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
+    "@types/pg": "^8.16.0",
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "8.48.1",
     "@typescript-eslint/parser": "8.48.1",
