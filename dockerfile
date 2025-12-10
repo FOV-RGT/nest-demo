@@ -19,7 +19,7 @@ RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 # 复制源代码
 COPY src ./src
 COPY tsconfig.json tsconfig.build.json nest-cli.json prisma.config.ts ./
-# COPY prisma ./prisma
+COPY prisma ./prisma
 
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
