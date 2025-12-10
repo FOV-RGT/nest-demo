@@ -1,4 +1,4 @@
-# nest-demo-basic
+# nest-demo-advanced
 
 一个极简的 NestJS 后端服务示例框架。
 
