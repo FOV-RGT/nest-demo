@@ -52,7 +52,7 @@ export default [
             'no-debugger': 'error', // debugger 不能提交
             'prefer-const': 'error', // 优先 const
             'no-var': 'error', // 禁用 var
-            'eqeqeq': ['error', 'always'], // 使用 === 而非 ==
+            eqeqeq: ['error', 'always'], // 使用 === 而非 ==
             // 'no-redeclare': 'off', // 允许变量重声明
 
             // 关闭过度的规则
@@ -62,6 +62,6 @@ export default [
         },
     },
     {
-        ignores: ['node_modules/', 'dist/', 'coverage/', 'src/prisma/generated'],
+        ignores: ['node_modules/', 'dist/', 'coverage/', 'prisma/generated'],
     },
 ];

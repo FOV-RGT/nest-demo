@@ -32,7 +32,7 @@ export default {
     overrides: [
         // 针对 YAML 文件使用 2 个空格缩进
         {
-            files: '*.{yaml,yml}',
+            files: '*.{yaml,yml,json}',
             options: {
                 tabWidth: 2,
             },

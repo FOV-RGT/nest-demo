@@ -6,13 +6,13 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "nest build",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:prod": "node dist/main",
-    "format": "prettier --write \"{src,libs,test}/**/*.ts\"",
-    "lint": "eslint \"{src,libs,test}/**/*.ts\"",
-    "lint:fix": "eslint \"{src,libs,test}/**/*.ts\" --fix",
+    "build": "nest build && tsc-alias -p tsconfig.json",
+    "start": "nest start --exec \"pnpm tsc-alias -p tsconfig.json && node dist/src/main\"",
+    "start:dev": "nest start --watch --exec \"pnpm tsc-alias -p tsconfig.json && node dist/src/main\"",
+    "start:prod": "node dist/src/main",
+    "format": "prettier --write .",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "lint:staged": "lint-staged",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
@@ -25,7 +25,6 @@
     "pnpm": ">=8.0.0"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
     "@nestjs/cli": "^11.0.14",
     "@nestjs/common": "^11.1.9",
     "@nestjs/config": "^4.0.2",
@@ -33,10 +32,12 @@
     "@nestjs/platform-express": "^11.1.9",
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
-    "prisma": "^7.1.0",
+    "dotenv": "^17.2.3",
     "pg": "^8.16.3",
+    "prisma": "^7.1.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2"
+    "rxjs": "^7.8.2",
+    "tsc-alias": "^1.8.16"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

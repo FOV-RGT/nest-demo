@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from './generated/client.js';
+import { PrismaClient } from '@root/prisma/generated/client.js';
 
 @Injectable()
 export class PrismaService extends PrismaClient {

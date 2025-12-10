@@ -47,17 +47,16 @@
 ## 可用的修改示例（直接可复制参考）
 
 - 添加一个新路由（概要）：
+    - 在 `src/app.controller.ts` 中加入：
 
-  - 在 `src/app.controller.ts` 中加入：
+        ```ts
+        @Get('metrics')
+        getMetrics() {
+          return this.appService.getMetrics();
+        }
+        ```
 
-    ```ts
-    @Get('metrics')
-    getMetrics() {
-      return this.appService.getMetrics();
-    }
-    ```
-
-  - 在 `src/app.service.ts` 中添加 `getMetrics()` 方法并导出简单对象。
+    - 在 `src/app.service.ts` 中添加 `getMetrics()` 方法并导出简单对象。
 
 ## 合并/更新策略
 

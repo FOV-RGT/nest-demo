@@ -21,8 +21,9 @@ export default {
 
     // 路径别名映射(与 tsconfig.json 中的 paths 对应)
     moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/$1',
-        '^(\\.{1,2}/.*)\\.js$': '$1', // ESM: .js 映射到 .ts
+        '^@/(.*?)(?:\\.js)?$': '<rootDir>/src/$1', // @/ 别名(可选 .js 后缀)
+        '^@root/(.*?)(?:\\.js)?$': '<rootDir>/$1', // @/ 别名(可选 .js 后缀)
+        '^(\\.{1,2}/.*)\\.js$': '$1', // ESM: 相对路径 .js 映射到 .ts
     },
 
     // ===== ts-jest 配置 =====
@@ -64,7 +65,7 @@ export default {
         // '!src/app.controller.ts', // 排除 controller
         // '!src/app.service.ts', // 排除 service
         // '!src/app.module.ts', // 排除 module
-        '!src/prisma/generated/**', // 排除 Prisma 生成的代码
+        // '!src/prisma/generated/**', // 排除 Prisma 生成的代码
     ],
 
     // 覆盖率阈值
