@@ -26,10 +26,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "::group::📥 安装项目依赖"
+          echo "📥 安装项目依赖"
           pnpm install
           echo "✓ 依赖安装完成"
-          echo "::endgroup::"
 
       - name: Generate Prisma Client
         env:
@@ -38,21 +37,18 @@ jobs:
 
       - name: Format & Lint code
         run: |
-          echo "::group::📝 格式化代码"
-          pnpm format
+          echo "📝 格式化代码"
+          pnpm prettier --write .
           echo "✓ 格式化完成"
-          echo "::endgroup::"
-          echo "::group::✅ 质量检查"
-          pnpm lint:fix
+          echo "✅ 质量检查"
+          pnpm eslint --fix
           echo "✓ 质量检查完成"
-          echo "::endgroup::"
 
       - name: Run tests with coverage
         run: |
-          echo "::group::🧪 运行测试"
+          echo "🧪 运行测试"
           pnpm test --ci --coverage
           echo "✓ 测试完成"
-          echo "::endgroup::"
 
       # - name: Publish test results
       #   uses: dorny/test-reporter@v1
@@ -64,16 +60,16 @@ jobs:
 
       # - name: Build
       #   run: |
-      #     echo "::group::🏗️ 构建项目"
+      #     echo "🏗️ 构建项目"
       #     pnpm build
       #     echo "✓ 构建完成"
-      #     echo "::endgroup::"
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
+
   build-and-publish:
     needs: lint-and-test  # 仅在 lint-and-test 成功后运行
     runs-on: ubuntu-latest
@@ -96,30 +92,32 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ vars.DOCKER_USERNAME }}/nest-demo:latest
-            ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.ref_name }}-${{ github.sha }}
-            ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.run_number }}
+            ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+            ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.sha }}
+            ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.run_number }}
           # 构建时传入环境变量
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
       - name: Generate Summary
-        if: always()  # 无论成功失败都执行
         run: |
-          TIMESTAMP=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          TIMESTAMP_UTC=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          TIMESTAMP_CN=$(TZ='Asia/Shanghai' date +"%Y-%m-%d %H:%M:%S %Z")
           cat >> $GITHUB_STEP_SUMMARY << EOF
           ## 🚀 CI/CD Pipeline Summary
 
           ### ✅ 构建信息
-          - **仓库**: ${{ github.repository }}
+          - **代码仓库**: [${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
+          - **镜像仓库** : [Docker Hub](https://hub.docker.com/repository/docker/${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }})
           - **分支**: ${{ github.ref_name }}
           - **提交**: ${{ github.sha }}
           - **运行号**: ${{ github.run_number }}
 
           ### 📦 Docker 镜像
-          - ${{ vars.DOCKER_USERNAME }}/nest-demo:latest
-          - ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.ref_name }}-${{ github.sha }}
-          - ${{ vars.DOCKER_USERNAME }}/nest-demo:${{ github.run_number }}
+          - ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          - ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.sha }}
+          - ${{ vars.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ github.run_number }}
 
           ### ⏰ 时间戳
-          - 完成时间: $TIMESTAMP
+          - 完成时间 (UTC): $TIMESTAMP_UTC
+          - 完成时间 (China/Asia/Shanghai): $TIMESTAMP_CN
           EOF
