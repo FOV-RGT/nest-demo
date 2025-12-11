@@ -8,6 +8,13 @@ export default {
     // 测试环境：Node.js
     testEnvironment: 'node',
 
+    // 全局超时时间（毫秒）
+    testTimeout: 10000,
+
+    // 检测未关闭的句柄（调试用）
+    // forceExit: true, // 强制在此时间后退出（可能隐藏问题）
+    // detectOpenHandles: true, // 检测开放句柄（调试用，会减慢测试速度）
+
     // ===== 测试文件配置 =====
 
     // 测试文件搜索根目录
@@ -61,7 +68,7 @@ export default {
         'src/**/*.{ts,js}',
         '!src/**/*.spec.ts', // 排除测试文件
         '!src/**/*.e2e-spec.ts', // 排除 e2e 测试文件
-        // '!src/main.ts', // 排除入口文件
+        '!src/main.ts', // 排除入口文件
         // '!src/app.controller.ts', // 排除 controller
         // '!src/app.service.ts', // 排除 service
         // '!src/app.module.ts', // 排除 module
