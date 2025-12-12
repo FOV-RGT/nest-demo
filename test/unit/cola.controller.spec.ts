@@ -5,16 +5,18 @@ import { PrismaService } from '@/common/prisma.service';
 
 describe('ColaController', () => {
     let controller: ColaController;
-    let _service: ColaService;
+    let module: TestingModule;
 
     beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             controllers: [ColaController],
             providers: [ColaService, PrismaService],
         }).compile();
+        controller = module.get(ColaController);
+    });
 
-        controller = module.get<ColaController>(ColaController);
-        _service = module.get<ColaService>(ColaService);
+    afterAll(async () => {
+        await module.close();
     });
 
     it('should be defined', () => {

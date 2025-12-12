@@ -3,13 +3,17 @@ import { ColaService } from '@/modules/cola/cola.service';
 
 describe('ColaService', () => {
     let service: ColaService;
+    let module: TestingModule;
 
     beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
+        module = await Test.createTestingModule({
             providers: [ColaService],
         }).compile();
+        service = module.get(ColaService);
+    });
 
-        service = module.get<ColaService>(ColaService);
+    afterAll(async () => {
+        await module.close();
     });
 
     it('should be defined', () => {
