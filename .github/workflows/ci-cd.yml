@@ -6,12 +6,16 @@ on:
   # pull_request:
   #   branches: [main]
 
+env:
+  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME || github.repository_owner }}
+  DOCKER_REPO_NAME: ${{ vars.DOCKER_REPO_NAME || github.event.repository.name }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://username:password@host:port/dbName?schema=public' }}
+
 jobs:
-  lint-test-build-publish:
+  lint-and-test:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME || github.repository_owner }}
-      DOCKER_REPO_NAME: ${{ vars.DOCKER_REPO_NAME || github.event.repository.name }}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -24,16 +28,17 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: 22
+          # 若你的仓库中存在 pnpm-lock.yaml，请启用下一行缓存以加速依赖安装
           # cache: 'pnpm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           echo "📥 安装项目依赖"
           pnpm install
           echo "✓ 依赖安装完成"
 
-      - name: Extract version from package.json
+      - name: Extract Version from Package.json
         id: version
         run: |
           VERSION=$(node -e "console.log(require('./package.json').version)")
@@ -41,11 +46,9 @@ jobs:
           echo "📦 Application Version: $VERSION"
 
       - name: Generate Prisma Client
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pnpm prisma generate
 
-      - name: Format & Lint code
+      - name: Format & Lint Code
         run: |
           echo "📝 格式化代码"
           pnpm prettier --check .
@@ -54,7 +57,7 @@ jobs:
           pnpm eslint
           echo "✓ 质量检查完成"
 
-      - name: Run tests with coverage
+      - name: Run Tests with Coverage
         run: |
           echo "🧪 运行测试"
           pnpm test --ci --coverage
@@ -68,11 +71,18 @@ jobs:
       #     path: coverage/test-results.json
       #     reporter: jest-junit
 
-      - name: Upload coverage artifact
+      - name: Upload Coverage Artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
+
+  build-and-publish:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -91,12 +101,18 @@ jobs:
           tags: |
             ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:latest
             ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ github.ref_name }}-${{ github.sha }}
-            ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ steps.version.outputs.version }}
+            ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${{ needs.lint-and-test.outputs.version }}
           # 构建时传入环境变量
           build-args: |
             GIT_COMMIT=${{ github.sha }}
-            APP_VERSION=${{ steps.version.outputs.version }}
+            APP_VERSION=${{ needs.lint-and-test.outputs.version }}
 
+  Generate-Summary:
+    needs:
+      - lint-and-test
+      - build-and-publish
+    runs-on: ubuntu-latest
+    steps:
       - name: Generate Summary
         run: |
           TIMESTAMP_UTC=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
@@ -113,7 +129,7 @@ jobs:
           ### 📦 Docker 镜像
           - $DOCKER_USERNAME/$DOCKER_REPO_NAME:latest
           - $DOCKER_USERNAME/$DOCKER_REPO_NAME:${{ github.ref_name }}-${{ github.sha }}
-          - $DOCKER_USERNAME/$DOCKER_REPO_NAME:${{ steps.version.outputs.version }}
+          - $DOCKER_USERNAME/$DOCKER_REPO_NAME:${{ needs.lint-and-test.outputs.version }}
 
           ### ⏰ 时间戳
           - 完成时间 (UTC): $TIMESTAMP_UTC
